@@ -7,26 +7,15 @@ import teccr.justdoitcloud.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-/**
- * Service responsible for user-related business logic.
- */
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
 
-    // Constructor injection of UserRepository
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    /**
-     * Authenticate a user by username. For initial purposes this only looks
-     * up the user by username and returns it if present.
-     *
-     * @param username the username to authenticate
-     * @return Optional containing the User if found
-     */
     public Optional<User> authenticate(String username) {
         if (username == null || username.trim().isEmpty()) {
             return Optional.empty();
@@ -43,6 +32,13 @@ public class UserService {
             return Optional.empty();
         }
         return userRepository.findById(id);
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        if (username == null || username.trim().isEmpty()) {
+            return Optional.empty();
+        }
+        return userRepository.findByUserName(username.trim());
     }
 
     public User createUser(User user) {
@@ -70,5 +66,4 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
-
 }
